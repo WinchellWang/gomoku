@@ -31,10 +31,6 @@ body {
   inset: 0;
   width: 100%;
   min-height: 100vh;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
-body.game-active {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: none;

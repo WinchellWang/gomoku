@@ -1,0 +1,9 @@
+services:
+  gomoku-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gomoku_web
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8080:80"

@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "Gomoku Arena",
+  "short_name": "Gomoku",
+  "description": "Play freestyle Gomoku locally against another player or a strong computer opponent.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050608",
+  "theme_color": "#050608",
+  "icons": [{ "src": "./assets/gomoku-pwa-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

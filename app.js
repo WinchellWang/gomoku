@@ -242,7 +242,7 @@ function armAiMoveTimeout() {
       console.warn("Rapfi move timed out; restarting the engine.");
       initializeAi();
     }
-  }, 10000);
+  }, 6000);
 }
 
 function updateLoadingProgress(percent) {
@@ -285,7 +285,7 @@ function initializeAi() {
       if (mode === "pve" && current === WHITE && !winner) {
         thinking = true;
         statusText.textContent = "AI is thinking...";
-        worker.postMessage({ type: "think", moves: moves.slice(), timeLimit: 8000 });
+        worker.postMessage({ type: "think", moves: moves.slice(), timeLimit: 5000 });
         armAiMoveTimeout();
       } else {
         thinking = false;
@@ -314,7 +314,7 @@ function requestAiMove() {
   statusText.textContent = "AI is thinking...";
   undoBtn.disabled = true;
   if (!worker || !aiReady) { initializeAi(); return; }
-  worker.postMessage({ type: "think", moves: moves.slice(), timeLimit: 8000 });
+  worker.postMessage({ type: "think", moves: moves.slice(), timeLimit: 5000 });
   armAiMoveTimeout();
 }
 

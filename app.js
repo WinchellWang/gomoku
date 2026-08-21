@@ -324,7 +324,7 @@ function restartGame() {
 }
 
 function undo() {
-  if (!moves.length) return;
+  if (!moves.length || winner) return;
   stopWorker();
   const removeCount = mode === "pve" && moves.length > 1 && current === BLACK ? 2 : 1;
   for (let i = 0; i < removeCount && moves.length; i++) board[moves.pop()] = EMPTY;
@@ -352,8 +352,16 @@ function render() {
   else if (winner === WHITE) statusText.textContent = "White wins";
   else if (winner === -1) statusText.textContent = "Draw";
   else if (!thinking) statusText.textContent = `${current === BLACK ? "Black" : "White"} to move`;
-  undoBtn.disabled = !moves.length || thinking;
+  undoBtn.disabled = !moves.length || thinking || Boolean(winner);
 }
+
+let lastTouchEnd = 0;
+document.addEventListener("touchend", (event) => {
+  const now = Date.now();
+  if (now - lastTouchEnd < 300) event.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
+document.addEventListener("gesturestart", (event) => event.preventDefault());
 
 document.querySelector("#startHumanBtn").addEventListener("click", () => startGame("pvp"));
 document.querySelector("#startAiBtn").addEventListener("click", () => startGame("pve"));

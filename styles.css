@@ -9,7 +9,10 @@
   --board-shadow: rgba(0, 0, 0, 0.42);
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+  touch-action: manipulation;
+}
 
 html, body {
   margin: 0;
@@ -97,4 +100,8 @@ button { -webkit-tap-highlight-color: transparent; }
   .mode-grid { grid-template-columns: 1fr; }
   .mode-card { min-height: 128px; }
   .board-wrap { padding: 8px; }
+}
+
+@media (max-width: 760px) and (orientation: portrait) {
+  .game-active .shell { padding-inline: 3pt; }
 }

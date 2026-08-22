@@ -1,10 +1,10 @@
 # Gomoku Local Arena
 
-A static, installable 15 × 15 freestyle Gomoku web app with local PvP and PvE mode. In PvE, the human always plays Black and moves first.
+A static, installable 15 × 15 freestyle Gomoku web app that supports:
 
-- PvP Undo removes one move.
-- PvE Undo removes the latest human/AI pair and is available only on the human turn.
-- PvE uses the memory-efficient Rapfi build on every platform, with a three-second search limit.
+- Local human vs human play
+- Local human vs AI play (human always plays Black and moves first)
+- Undo in both modes
 
 ## Run locally with Docker
 
@@ -14,6 +14,6 @@ docker compose up --build
 
 Open:
 
-```text
+```bash
 http://localhost:8080
 ```

@@ -4,7 +4,7 @@ let queued = null;
 
 const engineBase = "./engine/";
 const engineName = "rapfi-single";
-const thinkTimeMs = 3000;
+const thinkTimeMs = 4500;
 const userAgent = self.navigator ? self.navigator.userAgent : "";
 const isAppleWebKit = /AppleWebKit/i.test(userAgent) && !/(Chrome|Chromium|Edg|OPR)\//i.test(userAgent);
 

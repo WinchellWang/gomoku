@@ -80,7 +80,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .toolbar__btn:disabled { opacity: .42; cursor: not-allowed; transform: none; }
 
 .turn-strip { display: flex; align-items: center; justify-content: center; gap: 9px; width: fit-content; min-height: 40px; padding: 8px 18px; margin-inline: auto; border-radius: 999px; background: rgba(255,255,255,.075); border: 1px solid rgba(255,255,255,.14); color: #eceef0; }
-.board-wrap { width: min(100%, 788px); margin-inline: auto; padding: clamp(14px,3.4vw,28px); background: #b58c51; box-shadow: 0 20px 60px var(--board-shadow); overflow: hidden; }
+.board-wrap { width: 100%; margin-inline: auto; padding: clamp(14px,3.4vw,28px); background: #b58c51; box-shadow: 0 20px 60px var(--board-shadow); overflow: hidden; }
 .board { position: relative; width: 100%; aspect-ratio: 1; background: var(--board); user-select: none; }
 .grid-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .grid-lines line { stroke: var(--line); stroke-width: 0.5pt; vector-effect: non-scaling-stroke; shape-rendering: geometricPrecision; }

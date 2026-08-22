@@ -3,6 +3,8 @@ let ready = false;
 let queued = null;
 
 const engineBase = "./engine/";
+const engineName = "rapfi-single";
+const thinkTimeMs = 3000;
 const userAgent = self.navigator ? self.navigator.userAgent : "";
 const isAppleWebKit = /AppleWebKit/i.test(userAgent) && !/(Chrome|Chromium|Edg|OPR)\//i.test(userAgent);
 
@@ -15,24 +17,22 @@ function send(command) {
   engine.sendCommand(command);
 }
 
-function think({ moves, timeLimit }) {
+function think({ moves }) {
   if (!ready) {
-    queued = { moves, timeLimit };
+    queued = { moves };
     return;
   }
 
   send("INFO RULE 0");
   send("INFO THREAD_NUM 1");
   send("INFO STRENGTH 100");
-  send("INFO TIMEOUT_TURN " + Math.min(8000, timeLimit || 8000));
+  send("INFO TIMEOUT_TURN " + thinkTimeMs);
   send("INFO TIMEOUT_MATCH 600000");
   send("INFO MAX_DEPTH 100");
   send("INFO MAX_NODE 0");
   send("INFO SHOW_DETAIL 0");
   send("INFO PONDERING 0");
-  // WebKit applies a tighter memory budget to workers. Keep the full NNUE
-  // model, but use a smaller transposition table so thinking does not kill it.
-  send("INFO HASH_SIZE " + (isAppleWebKit ? 32768 : 131072));
+  send("INFO HASH_SIZE 32768");
   send("START 15");
 
   let command = "BOARD";
@@ -48,10 +48,7 @@ self.onmessage = ({ data }) => {
 };
 
 try {
-  const simdProbe = new Uint8Array([0,97,115,109,1,0,0,0,1,5,1,96,0,1,123,3,2,1,0,10,10,1,8,0,65,0,253,15,253,98,11]);
-  const useSimd = !isAppleWebKit && WebAssembly.validate(simdProbe);
-  const engineName = useSimd ? "rapfi-single-simd128" : "rapfi-single";
-  const engineScript = engineBase + engineName + ".js?v=20260820-3";
+  const engineScript = engineBase + engineName + ".js?v=20260822-1";
 
   importScripts(engineScript);
   const options = {

@@ -2,6 +2,7 @@ const SIZE = 15;
 const EMPTY = 0;
 const BLACK = 1;
 const WHITE = 2;
+const AI_MOVE_HARD_TIMEOUT_MS = 4000;
 
 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -200,6 +201,15 @@ function playHuman(index) {
   if (!winner && mode === "pve") requestAiMove();
 }
 
+function getUndoCount() {
+  return mode === "pve" ? 2 : 1;
+}
+
+function canUndo() {
+  const isHumanTurn = mode === "pvp" || current === BLACK;
+  return !thinking && !winner && isHumanTurn && moves.length >= getUndoCount();
+}
+
 function makeMove(index, player) {
   board[index] = player;
   moves.push(index);
@@ -233,10 +243,17 @@ function armAiMoveTimeout() {
   clearTimeout(aiMoveTimer);
   aiMoveTimer = setTimeout(() => {
     if (thinking && mode === "pve" && current === WHITE && !winner) {
-      console.warn("Rapfi move timed out; restarting the engine.");
-      initializeAi();
+      console.warn("Rapfi move timed out; playing a fallback move.");
+      const fallback = Array.from(board.keys())
+        .filter((index) => board[index] === EMPTY)
+        .sort((a, b) => {
+          const distance = (index) => Math.abs(index % SIZE - 7) + Math.abs(Math.floor(index / SIZE) - 7);
+          return distance(a) - distance(b);
+        })[0];
+      stopWorker();
+      if (fallback !== undefined) makeMove(fallback, WHITE);
     }
-  }, 6000);
+  }, AI_MOVE_HARD_TIMEOUT_MS);
 }
 
 function updateLoadingProgress(percent) {
@@ -260,7 +277,7 @@ function initializeAi() {
   clearTimeout(aiLoadTimer);
   worker?.terminate();
   try {
-    worker = new Worker("./rapfi-worker.js?v=20260820-11");
+    worker = new Worker("./rapfi-worker.js?v=20260822-1");
   } catch (error) {
     fail(error);
     return;
@@ -279,7 +296,7 @@ function initializeAi() {
       if (mode === "pve" && current === WHITE && !winner) {
         thinking = true;
         statusText.textContent = "AI is thinking...";
-        worker.postMessage({ type: "think", moves: moves.slice(), timeLimit: 5000 });
+        worker.postMessage({ type: "think", moves: moves.slice() });
         armAiMoveTimeout();
       } else {
         thinking = false;
@@ -308,7 +325,7 @@ function requestAiMove() {
   statusText.textContent = "AI is thinking...";
   undoBtn.disabled = true;
   if (!worker || !aiReady) { initializeAi(); return; }
-  worker.postMessage({ type: "think", moves: moves.slice(), timeLimit: 5000 });
+  worker.postMessage({ type: "think", moves: moves.slice() });
   armAiMoveTimeout();
 }
 
@@ -318,15 +335,16 @@ function restartGame() {
 }
 
 function undo() {
-  if (!moves.length || winner) return;
-  stopWorker();
-  const removeCount = mode === "pve" && moves.length > 1 && current === BLACK ? 2 : 1;
-  for (let i = 0; i < removeCount && moves.length; i++) board[moves.pop()] = EMPTY;
+  if (!canUndo()) return;
+
+  const undoCount = getUndoCount();
+  for (let step = 0; step < undoCount; step++) {
+    board[moves.pop()] = EMPTY;
+  }
   winner = EMPTY;
   winningCells = [];
   current = moves.length % 2 === 0 ? BLACK : WHITE;
   render();
-  if (mode === "pve" && current === WHITE) requestAiMove();
 }
 
 function render() {
@@ -346,7 +364,7 @@ function render() {
   else if (winner === WHITE) statusText.textContent = "White wins";
   else if (winner === -1) statusText.textContent = "Draw";
   else if (!thinking) statusText.textContent = `${current === BLACK ? "Black" : "White"} to move`;
-  undoBtn.disabled = !moves.length || thinking || Boolean(winner);
+  undoBtn.disabled = !canUndo();
 }
 
 document.querySelector("#startHumanBtn").addEventListener("click", () => startGame("pvp"));

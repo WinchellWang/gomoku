@@ -41,7 +41,7 @@ button { -webkit-tap-highlight-color: transparent; }
   grid-template-columns: 1fr;
   align-content: start;
   gap: 12px;
-  padding: clamp(12px,2vw,20px);
+  padding: 5px clamp(12px,2vw,20px) clamp(12px,2vw,20px);
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -49,7 +49,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .panel { display: grid; gap: 12px; align-content: start; }
 .is-hidden { display: none !important; }
 .panel__header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
-.page-title { display: inline-flex; align-items: center; gap: 10px; margin: 0; font-size: clamp(2.15rem,3.5vw,3.2rem); }
+.page-title { display: inline-flex; align-items: center; gap: 10px; margin: 0; font-size: 2.8rem; }
 .page-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; width: 100%; }
 .page-title__logo { width: 1.05em; height: 1.05em; display: block; }
 
@@ -103,20 +103,6 @@ button { -webkit-tap-highlight-color: transparent; }
 .engine-loading__track { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.2); }
 .engine-loading__bar { width: 0; height: 100%; border-radius: inherit; background: #fff; transition: width 120ms linear; }
 
-@media (max-width: 760px) {
-  .shell { padding: 12px; }
-  .page-title { font-size: clamp(2.1rem,7vw,2.8rem); }
-  .mode-grid { grid-template-columns: 1fr; }
-  .mode-card { min-height: 104px; }
-}
-
 @media (orientation: portrait) {
-  .game-active .shell { padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right)); }
   .game-actions { flex-basis: 100%; margin-left: 0; }
-}
-
-@media (orientation: landscape) and (min-width: 761px) and (max-height: 900px) {
-  .shell { padding-top: max(12px, env(safe-area-inset-top)); }
-  .panel--game { gap: 8px; }
-  .panel--game .board-wrap { width: min(100%, calc(100svh - 216px), 680px); }
 }

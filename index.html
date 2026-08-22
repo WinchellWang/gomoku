@@ -7,8 +7,8 @@
     <title>Gomoku Arena</title>
     <link rel="icon" href="./assets/gomoku-logo.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=20260822-1" />
-    <script type="module" src="./app.js?v=20260822-1"></script>
+    <link rel="stylesheet" href="./styles.css?v=20260822-2" />
+    <script type="module" src="./app.js?v=20260822-2"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1MWHENMFEE"></script>
     <script>
@@ -37,17 +37,16 @@
       </section>
 
       <section class="panel panel--game is-hidden" id="gameView">
-        <header class="panel__header">
-          <div class="page-title-row">
+        <header class="panel__header panel__header--game">
+          <div class="page-title-row game-header-row">
             <h1 class="page-title"><img class="page-title__logo" src="./assets/gomoku-logo.svg" alt="Gomoku logo" /><span>Gomoku</span></h1>
             <button id="backBtn" class="toolbar__btn toolbar__btn--inline" type="button">Mode select</button>
+            <div class="toolbar game-actions">
+              <button id="resetBtn" class="toolbar__btn" type="button">Restart game</button>
+              <button id="undoBtn" class="toolbar__btn" type="button">Undo move</button>
+            </div>
           </div>
         </header>
-
-        <div class="toolbar">
-          <button id="resetBtn" class="toolbar__btn" type="button">Restart game</button>
-          <button id="undoBtn" class="toolbar__btn" type="button">Undo move</button>
-        </div>
         <div class="turn-strip"><span id="statusText" aria-live="polite">Black to move</span></div>
         <div class="board-wrap"><div id="board" class="board" role="grid" aria-label="15 by 15 Gomoku board"></div></div>
       </section>

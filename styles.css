@@ -92,7 +92,8 @@ button { -webkit-tap-highlight-color: transparent; }
 .intersection.winner .stone { box-shadow: 0 0 0 3px rgba(207,48,48,.85); }
 
 .game-active .site-footer { display: none; }
-.game-active .shell { padding-bottom: var(--page-edge-gap); }
+.game-active .shell { padding-inline: 0; padding-bottom: 0; }
+.game-active .panel__header--game { padding-inline: var(--page-edge-gap); }
 .site-footer { display: grid; grid-template-rows: max-content max-content; justify-items: center; gap: 8px; width: 100%; margin-top: 2px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.06); color: #bdc0c4; text-align: center; }
 .site-footer p { margin: 0; }
 .github-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 196px; height: 40px; padding: 0 12px; border-radius: 8px; background: #202226; color: #fff; font-size: .92rem; font-weight: 700; text-decoration: none; transition: transform 120ms ease, background 120ms ease; }

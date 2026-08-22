@@ -135,17 +135,11 @@ function createBoard() {
   for (let i = 0; i < SIZE; i++) {
     const vertical = document.createElementNS("http://www.w3.org/2000/svg", "line");
     vertical.setAttribute("x1", i);
-    vertical.setAttribute("stroke", "rgba(36, 27, 15, 0.78)");
-    vertical.setAttribute("stroke-width", "0.6667");
-    vertical.setAttribute("vector-effect", "non-scaling-stroke");
     vertical.setAttribute("y1", 0);
     vertical.setAttribute("x2", i);
     vertical.setAttribute("y2", 14);
     const horizontal = document.createElementNS("http://www.w3.org/2000/svg", "line");
     horizontal.setAttribute("x1", 0);
-    horizontal.setAttribute("stroke", "rgba(36, 27, 15, 0.78)");
-    horizontal.setAttribute("stroke-width", "0.6667");
-    horizontal.setAttribute("vector-effect", "non-scaling-stroke");
     horizontal.setAttribute("y1", i);
     horizontal.setAttribute("x2", 14);
     horizontal.setAttribute("y2", i);
@@ -354,14 +348,6 @@ function render() {
   else if (!thinking) statusText.textContent = `${current === BLACK ? "Black" : "White"} to move`;
   undoBtn.disabled = !moves.length || thinking || Boolean(winner);
 }
-
-let lastTouchEnd = 0;
-document.addEventListener("touchend", (event) => {
-  const now = Date.now();
-  if (now - lastTouchEnd < 300) event.preventDefault();
-  lastTouchEnd = now;
-}, { passive: false });
-document.addEventListener("gesturestart", (event) => event.preventDefault());
 
 document.querySelector("#startHumanBtn").addEventListener("click", () => startGame("pvp"));
 document.querySelector("#startAiBtn").addEventListener("click", () => startGame("pve"));

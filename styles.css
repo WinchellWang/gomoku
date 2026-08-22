@@ -17,6 +17,8 @@
 html, body {
   margin: 0;
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   overscroll-behavior-y: none;
   touch-action: manipulation;
   background:
@@ -28,7 +30,6 @@ html, body {
 
 body {
   min-height: 100vh;
-  overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -76,7 +77,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .toolbar__btn:disabled { opacity: .42; cursor: not-allowed; transform: none; }
 
 .turn-strip { display: flex; align-items: center; justify-content: center; gap: 9px; width: fit-content; min-height: 40px; padding: 8px 18px; margin-inline: auto; border-radius: 999px; background: rgba(255,255,255,.075); border: 1px solid rgba(255,255,255,.14); color: #eceef0; }
-.board-wrap { width: min(100%, 760px); margin-inline: auto; padding: clamp(8px,1.4vw,14px); background: #b58c51; box-shadow: 0 20px 60px var(--board-shadow); }
+.board-wrap { width: min(100%, 788px); margin-inline: auto; padding: clamp(14px,3.4vw,28px); background: #b58c51; box-shadow: 0 20px 60px var(--board-shadow); overflow: hidden; }
 .board { position: relative; width: 100%; aspect-ratio: 1; background: var(--board); user-select: none; }
 .grid-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 .grid-lines line { stroke: var(--line); stroke-width: 0.5pt; vector-effect: non-scaling-stroke; shape-rendering: geometricPrecision; }
@@ -84,7 +85,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .stone { width: calc(100% - 3pt); height: calc(100% - 3pt); border-radius: 50%; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: contain; box-shadow: none; }
 .stone.black { background-image: url("./assets/black-stone.svg"); }
 .stone.white { background-image: url("./assets/white-stone.svg"); }
-.intersection.last .stone { box-shadow: 0 0 0 3px rgba(207,48,48,.85); }
+.intersection.last .stone,
 .intersection.winner .stone { box-shadow: 0 0 0 3px rgba(207,48,48,.85); }
 
 .game-active .site-footer { display: none; }
@@ -105,9 +106,9 @@ button { -webkit-tap-highlight-color: transparent; }
   .page-title { font-size: clamp(2.1rem,7vw,2.8rem); }
   .mode-grid { grid-template-columns: 1fr; }
   .mode-card { min-height: 128px; }
-  .board-wrap { padding: 8px; }
 }
 
 @media (max-width: 760px) and (orientation: portrait) {
-  .game-active .shell { padding-inline: 3pt; }
+  .game-active .shell { padding-inline: max(8px, env(safe-area-inset-left)) max(8px, env(safe-area-inset-right)); }
+  .toolbar__btn--inline { font-size: 1rem; padding: .65em .8em; }
 }

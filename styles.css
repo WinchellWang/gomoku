@@ -49,7 +49,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .panel { display: grid; gap: 12px; align-content: start; }
 .is-hidden { display: none !important; }
 .panel__header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
-.page-title { display: inline-flex; align-items: center; gap: 10px; margin: 0; font-size: 2.8rem; }
+.page-title { display: inline-flex; align-items: center; gap: 10px; margin: 0; font-size: clamp(2.8rem,3.5vw,3.2rem); }
 .page-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; width: 100%; }
 .page-title__logo { width: 1.05em; height: 1.05em; display: block; }
 
@@ -104,5 +104,6 @@ button { -webkit-tap-highlight-color: transparent; }
 .engine-loading__bar { width: 0; height: 100%; border-radius: inherit; background: #fff; transition: width 120ms linear; }
 
 @media (orientation: portrait) {
+  .page-title { font-size: clamp(2.1rem,7vw,2.8rem); }
   .game-actions { flex-basis: 100%; margin-left: 0; }
 }

@@ -2,7 +2,9 @@ const SIZE = 15;
 const EMPTY = 0;
 const BLACK = 1;
 const WHITE = 2;
-const AI_MOVE_HARD_TIMEOUT_MS = 4000;
+// Rapfi searches for 4.5s in the worker. Leave enough delivery headroom on
+// slower mobile devices before deciding that the engine is actually stuck.
+const AI_MOVE_HARD_TIMEOUT_MS = 9000;
 
 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -126,6 +128,7 @@ let worker = null;
 let aiLoadTimer = null;
 let aiReady = false;
 let aiMoveTimer = null;
+let aiRequestId = 0;
 
 function createBoard() {
   const fragment = document.createDocumentFragment();
@@ -185,8 +188,12 @@ function stopWorker() {
   thinking = false;
 }
 
-function resetGame() {
-  stopWorker();
+function resetGame({ preserveAi = true } = {}) {
+  clearTimeout(aiMoveTimer);
+  aiMoveTimer = null;
+  aiRequestId++;
+  thinking = false;
+  if (!preserveAi) stopWorker();
   board = new Int8Array(SIZE * SIZE);
   moves = [];
   current = BLACK;
@@ -244,16 +251,26 @@ function armAiMoveTimeout() {
   aiMoveTimer = setTimeout(() => {
     if (thinking && mode === "pve" && current === WHITE && !winner) {
       console.warn("Rapfi move timed out; playing a fallback move.");
-      const fallback = Array.from(board.keys())
-        .filter((index) => board[index] === EMPTY)
-        .sort((a, b) => {
-          const distance = (index) => Math.abs(index % SIZE - 7) + Math.abs(Math.floor(index / SIZE) - 7);
-          return distance(a) - distance(b);
-        })[0];
+      const fallback = findFallbackMove();
       stopWorker();
       if (fallback !== undefined) makeMove(fallback, WHITE);
     }
   }, AI_MOVE_HARD_TIMEOUT_MS);
+}
+
+function findFallbackMove() {
+  const empty = Array.from(board.keys()).filter((index) => board[index] === EMPTY);
+  // A rare engine failure should still take a direct win or block one.
+  for (const player of [WHITE, BLACK]) {
+    for (const index of empty) {
+      board[index] = player;
+      const wins = getWinningLine(index, player).length > 0;
+      board[index] = EMPTY;
+      if (wins) return index;
+    }
+  }
+  const distance = (index) => Math.abs(index % SIZE - 7) + Math.abs(Math.floor(index / SIZE) - 7);
+  return empty.sort((a, b) => distance(a) - distance(b))[0];
 }
 
 function updateLoadingProgress(percent) {
@@ -263,6 +280,8 @@ function updateLoadingProgress(percent) {
 }
 
 function initializeAi() {
+  // Reuse an already-loaded or currently-loading 40MB engine.
+  if (worker) return;
   aiReady = false;
   thinking = true;
   engineLoading.classList.remove("is-hidden");
@@ -275,9 +294,8 @@ function initializeAi() {
     render();
   };
   clearTimeout(aiLoadTimer);
-  worker?.terminate();
   try {
-    worker = new Worker("./rapfi-worker.js?v=20260822-1");
+    worker = new Worker("./rapfi-worker.js?v=20260822-2");
   } catch (error) {
     fail(error);
     return;
@@ -296,7 +314,8 @@ function initializeAi() {
       if (mode === "pve" && current === WHITE && !winner) {
         thinking = true;
         statusText.textContent = "AI is thinking...";
-        worker.postMessage({ type: "think", moves: moves.slice() });
+        const requestId = ++aiRequestId;
+        worker.postMessage({ type: "think", moves: moves.slice(), requestId });
         armAiMoveTimeout();
       } else {
         thinking = false;
@@ -308,7 +327,7 @@ function initializeAi() {
       fail(data.message);
       return;
     }
-    if (!thinking || data.type !== "move") return;
+    if (!thinking || data.type !== "move" || data.requestId !== aiRequestId) return;
     clearTimeout(aiMoveTimer);
     aiMoveTimer = null;
     thinking = false;
@@ -325,13 +344,17 @@ function requestAiMove() {
   statusText.textContent = "AI is thinking...";
   undoBtn.disabled = true;
   if (!worker || !aiReady) { initializeAi(); return; }
-  worker.postMessage({ type: "think", moves: moves.slice() });
+  const requestId = ++aiRequestId;
+  worker.postMessage({ type: "think", moves: moves.slice(), requestId });
   armAiMoveTimeout();
 }
 
 function restartGame() {
+  // Rapfi cannot switch boards in the middle of a search. Keeping restart
+  // disabled for this short interval avoids destroying and reloading it.
+  if (thinking && aiReady) return;
   resetGame();
-  if (mode === "pve") initializeAi();
+  if (mode === "pve" && !worker) initializeAi();
 }
 
 function undo() {
@@ -365,6 +388,7 @@ function render() {
   else if (winner === -1) statusText.textContent = "Draw";
   else if (!thinking) statusText.textContent = `${current === BLACK ? "Black" : "White"} to move`;
   undoBtn.disabled = !canUndo();
+  document.querySelector("#resetBtn").disabled = thinking && aiReady;
 }
 
 document.querySelector("#startHumanBtn").addEventListener("click", () => startGame("pvp"));

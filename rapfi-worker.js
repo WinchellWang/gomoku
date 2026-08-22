@@ -1,6 +1,7 @@
 let engine = null;
 let ready = false;
 let queued = null;
+let activeRequestId = 0;
 
 const engineBase = "./engine/";
 const engineName = "rapfi-single";
@@ -17,11 +18,12 @@ function send(command) {
   engine.sendCommand(command);
 }
 
-function think({ moves }) {
+function think({ moves, requestId }) {
   if (!ready) {
-    queued = { moves };
+    queued = { moves, requestId };
     return;
   }
+  activeRequestId = requestId;
 
   send("INFO RULE 0");
   send("INFO THREAD_NUM 1");
@@ -65,7 +67,7 @@ try {
     onReceiveStdout(output) {
       const match = String(output).trim().match(/^(\d+),(\d+)$/);
       if (!match) return;
-      self.postMessage({ type: "move", index: Number(match[2]) * 15 + Number(match[1]) });
+      self.postMessage({ type: "move", index: Number(match[2]) * 15 + Number(match[1]), requestId: activeRequestId });
     },
     onReceiveStderr(output) {
       console.warn("[Rapfi]", output);

@@ -1,5 +1,5 @@
-const CACHE_VERSION = "gomoku-v1";
-const APP_SHELL = [
+const CACHE_VERSION = "gomoku-v2";
+const CORE_ASSETS = [
   "./",
   "./index.html",
   "./about.md",
@@ -7,20 +7,37 @@ const APP_SHELL = [
   "./styles.css",
   "./app.js",
   "./rapfi-worker.js",
-  "./engine/rapfi-single.js",
-  "./engine/rapfi-single.wasm",
-  "./engine/rapfi.data",
   "./assets/gomoku-logo.svg",
   "./assets/black-stone.svg",
   "./assets/white-stone.svg",
   "./assets/gomoku-pwa-icon.svg",
 ];
 
+const ENGINE_ASSETS = [
+  "./engine/rapfi-single.js",
+  "./engine/rapfi-single.wasm",
+  "./engine/rapfi.data",
+];
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)),
+    caches.open(CACHE_VERSION).then(async (cache) => {
+      // The small app shell is required for offline startup.
+      await cache.addAll(CORE_ASSETS);
+
+      // The AI data file is about 39 MB. Some browsers enforce a smaller
+      // Cache Storage quota, so a failure here must not abort SW installation.
+      await Promise.all(ENGINE_ASSETS.map(async (asset) => {
+        try {
+          await cache.add(asset);
+        } catch (error) {
+          console.warn("Optional PWA cache failed:", asset, error);
+        }
+      }));
+
+      await self.skipWaiting();
+    }),
   );
-  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
@@ -47,7 +64,9 @@ self.addEventListener("fetch", (event) => {
       return fetch(request).then((response) => {
         if (response.ok) {
           const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+          caches.open(CACHE_VERSION)
+            .then((cache) => cache.put(request, copy))
+            .catch((error) => console.warn("Runtime PWA cache failed:", url.pathname, error));
         }
         return response;
       });

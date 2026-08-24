@@ -9,6 +9,16 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./styles.css?v=20260822-10" />
     <script type="module" src="./app.js?v=20260822-6"></script>
+    <!-- Register Service Worker for PWA/offline caching. -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch((error) => {
+            console.warn("Service Worker registration failed:", error);
+          });
+        });
+      }
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1MWHENMFEE"></script>
     <script>

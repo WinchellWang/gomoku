@@ -3,6 +3,7 @@ WORKDIR /usr/share/nginx/html
 COPY index.html ./index.html
 COPY about.md ./about.md
 COPY manifest.webmanifest ./manifest.webmanifest
+COPY sw.js ./sw.js
 COPY styles.css ./styles.css
 COPY app.js ./app.js
 COPY rapfi-worker.js ./rapfi-worker.js

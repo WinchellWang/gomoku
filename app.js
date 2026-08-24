@@ -2,8 +2,6 @@ const SIZE = 15;
 const EMPTY = 0;
 const BLACK = 1;
 const WHITE = 2;
-// Rapfi searches for 4.5s in the worker. Leave enough delivery headroom on
-// slower mobile devices before deciding that the engine is actually stuck.
 const AI_MOVE_HARD_TIMEOUT_MS = 15000;
 const AI_RELEASE = "20260824-1";
 

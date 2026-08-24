@@ -6,7 +6,7 @@ let activeRequestId = 0;
 const engineBase = "./engine/";
 const engineName = "rapfi-single";
 const engineRelease = "20260824-1";
-const thinkTimeMs = 4500;
+const thinkTimeMs = 2000;
 const userAgent = self.navigator ? self.navigator.userAgent : "";
 const isAppleWebKit = /AppleWebKit/i.test(userAgent) && !/(Chrome|Chromium|Edg|OPR)\//i.test(userAgent);
 

@@ -5,13 +5,16 @@ let activeRequestId = 0;
 
 const engineBase = "./engine/";
 const engineName = "rapfi-single";
+const engineRelease = "20260824-1";
 const thinkTimeMs = 4500;
 const userAgent = self.navigator ? self.navigator.userAgent : "";
 const isAppleWebKit = /AppleWebKit/i.test(userAgent) && !/(Chrome|Chromium|Edg|OPR)\//i.test(userAgent);
 
 function locateFile(name) {
   if (/^rapfi.*\.data$/.test(name)) name = "rapfi.data";
-  return new URL(engineBase + name, self.location.href).href;
+  const url = new URL(engineBase + name, self.location.href);
+  url.searchParams.set("v", engineRelease);
+  return url.href;
 }
 
 function send(command) {
@@ -50,7 +53,7 @@ self.onmessage = ({ data }) => {
 };
 
 try {
-  const engineScript = engineBase + engineName + ".js?v=20260822-1";
+  const engineScript = engineBase + engineName + ".js?v=" + engineRelease;
 
   importScripts(engineScript);
   const options = {

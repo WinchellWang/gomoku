@@ -4,7 +4,8 @@ const BLACK = 1;
 const WHITE = 2;
 // Rapfi searches for 4.5s in the worker. Leave enough delivery headroom on
 // slower mobile devices before deciding that the engine is actually stuck.
-const AI_MOVE_HARD_TIMEOUT_MS = 9000;
+const AI_MOVE_HARD_TIMEOUT_MS = 15000;
+const AI_RELEASE = "20260824-1";
 
 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -250,27 +251,12 @@ function armAiMoveTimeout() {
   clearTimeout(aiMoveTimer);
   aiMoveTimer = setTimeout(() => {
     if (thinking && mode === "pve" && current === WHITE && !winner) {
-      console.warn("Rapfi move timed out; playing a fallback move.");
-      const fallback = findFallbackMove();
+      console.error("Rapfi move timed out; no fallback move will be used.");
       stopWorker();
-      if (fallback !== undefined) makeMove(fallback, WHITE);
+      render();
+      statusText.textContent = "AI unavailable — restart to retry";
     }
   }, AI_MOVE_HARD_TIMEOUT_MS);
-}
-
-function findFallbackMove() {
-  const empty = Array.from(board.keys()).filter((index) => board[index] === EMPTY);
-  // A rare engine failure should still take a direct win or block one.
-  for (const player of [WHITE, BLACK]) {
-    for (const index of empty) {
-      board[index] = player;
-      const wins = getWinningLine(index, player).length > 0;
-      board[index] = EMPTY;
-      if (wins) return index;
-    }
-  }
-  const distance = (index) => Math.abs(index % SIZE - 7) + Math.abs(Math.floor(index / SIZE) - 7);
-  return empty.sort((a, b) => distance(a) - distance(b))[0];
 }
 
 function updateLoadingProgress(percent) {
@@ -290,12 +276,12 @@ function initializeAi() {
   const fail = (error) => {
     console.error("AI failed to load.", error);
     stopWorker();
-    statusText.textContent = "AI unavailable — restart to retry";
     render();
+    statusText.textContent = "AI unavailable — restart to retry";
   };
   clearTimeout(aiLoadTimer);
   try {
-    worker = new Worker("./rapfi-worker.js?v=20260822-2");
+    worker = new Worker(`./rapfi-worker.js?v=${AI_RELEASE}`);
   } catch (error) {
     fail(error);
     return;

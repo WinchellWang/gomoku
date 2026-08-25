@@ -43,7 +43,7 @@ button { -webkit-tap-highlight-color: transparent; }
   align-content: start;
   gap: 12px;
   padding: 5px var(--page-edge-gap) var(--page-edge-gap);
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 

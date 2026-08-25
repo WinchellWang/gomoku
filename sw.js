@@ -1,4 +1,4 @@
-const CACHE_VERSION = "gomoku-v6";
+const CACHE_VERSION = "gomoku-v3";
 const CORE_ASSETS = [
   "./",
   "./index.html",

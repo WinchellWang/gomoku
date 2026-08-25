@@ -106,6 +106,13 @@ button { -webkit-tap-highlight-color: transparent; }
 .engine-loading__track { height: 7px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.2); }
 .engine-loading__bar { width: 0; height: 100%; border-radius: inherit; background: #fff; transition: width 120ms linear; }
 
+@media (orientation: landscape) {
+  body.game-active { overflow-y: hidden; }
+  .game-active .shell { height: 100vh; height: 100dvh; min-height: 0; }
+  .game-active .panel--game { height: 100%; min-height: 0; grid-template-rows: max-content max-content minmax(0, 1fr); }
+  .game-active .board-wrap { width: auto; height: 100%; max-height: 100%; aspect-ratio: 1; justify-self: center; }
+}
+
 @media (orientation: portrait) {
   .page-title { font-size: clamp(2.1rem,7vw,2.8rem); }
   .game-actions { flex-basis: 100%; margin-left: 0; }

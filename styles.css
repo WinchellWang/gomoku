@@ -38,6 +38,8 @@ button { -webkit-tap-highlight-color: transparent; }
 
 .shell {
   min-height: 100vh;
+  max-width: 100vh;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;
   align-content: start;
@@ -45,13 +47,6 @@ button { -webkit-tap-highlight-color: transparent; }
   padding: 5px var(--page-edge-gap) var(--page-edge-gap);
   /* max-width: 1400px; */
   margin: 0 auto;
-}
-
-.page {
-  width: 100%;
-  max-width: 100vh;
-  max-width: 100dvh;
-  margin-inline: auto;
 }
 
 .panel { display: grid; gap: 12px; align-content: start; }

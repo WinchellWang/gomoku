@@ -7,7 +7,7 @@
     <title>Gomoku Arena</title>
     <link rel="icon" href="./assets/gomoku-logo.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=20260824-12" />
+    <link rel="stylesheet" href="./styles.css?v=20260824-13" />
     <script type="module" src="./app.js?v=20260824-1"></script>
     <!-- Register Service Worker for PWA/offline caching. -->
     <script>
@@ -58,7 +58,7 @@
           </div>
         </header>
         <div class="turn-strip"><span id="statusText" aria-live="polite">Black to move</span></div>
-        <div class="board-wrap"><div id="board" class="board" role="grid" aria-label="15 by 15 Gomoku board"></div></div>
+        <div class="board-stage"><div class="board-wrap"><div id="board" class="board" role="grid" aria-label="15 by 15 Gomoku board"></div></div></div>
       </section>
 
       <div class="engine-loading is-hidden" id="engineLoading" role="status" aria-live="polite">

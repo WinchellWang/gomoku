@@ -38,7 +38,9 @@ button { -webkit-tap-highlight-color: transparent; }
 
 .shell {
   min-height: 100vh;
-  max-width: 100vh;
+  width: 100%;
+  max-width: 80dvh;
+  max-width: 80vh;
   margin-inline: auto;
   display: grid;
   grid-template-columns: 1fr;

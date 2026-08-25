@@ -7,8 +7,8 @@
     <title>Gomoku Arena</title>
     <link rel="icon" href="./assets/gomoku-logo.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="stylesheet" href="./styles.css?v=20260824-10" />
-    <script type="module" src="./app.js?v=20260824-1"></script>
+    <link rel="stylesheet" href="./styles.css?v=20260825-1" />
+    <script type="module" src="./app.js?v=20260825-1"></script>
     <!-- Register Service Worker for PWA/offline caching. -->
     <script>
       if ("serviceWorker" in navigator) {
@@ -32,7 +32,11 @@
     <main class="shell">
       <section class="panel panel--landing" id="landing">
         <header class="panel__header">
-          <h1 class="page-title"><img class="page-title__logo" src="./assets/gomoku-logo.svg" alt="Gomoku logo" /><span>Gomoku</span></h1>
+          <h1 class="page-title">
+            <button class="page-title__reload" type="button" aria-label="Reload Gomoku">
+              <img class="page-title__logo" src="./assets/gomoku-logo.svg" alt="Gomoku logo" /><span>Gomoku</span>
+            </button>
+          </h1>
         </header>
 
         <div class="mode-grid">
@@ -49,7 +53,11 @@
       <section class="panel panel--game is-hidden" id="gameView">
         <header class="panel__header panel__header--game">
           <div class="page-title-row">
-            <h1 class="page-title"><img class="page-title__logo" src="./assets/gomoku-logo.svg" alt="Gomoku logo" /><span>Gomoku</span></h1>
+            <h1 class="page-title">
+              <button class="page-title__reload" type="button" aria-label="Reload Gomoku">
+                <img class="page-title__logo" src="./assets/gomoku-logo.svg" alt="Gomoku logo" /><span>Gomoku</span>
+              </button>
+            </h1>
             <button id="backBtn" class="toolbar__btn toolbar__btn--inline" type="button">Mode select</button>
             <div class="toolbar game-actions">
               <button id="resetBtn" class="toolbar__btn" type="button">Restart game</button>

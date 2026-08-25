@@ -4,6 +4,7 @@ const BLACK = 1;
 const WHITE = 2;
 const AI_MOVE_HARD_TIMEOUT_MS = 15000;
 const AI_RELEASE = "20260824-1";
+const pageReloadButtons = document.querySelectorAll(".page-title__reload");
 
 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 let audioContext = null;
@@ -378,6 +379,9 @@ function render() {
 document.querySelector("#startHumanBtn").addEventListener("click", () => startGame("pvp"));
 document.querySelector("#startAiBtn").addEventListener("click", () => startGame("pve"));
 document.querySelector("#resetBtn").addEventListener("click", restartGame);
+pageReloadButtons.forEach((button) => {
+  button.addEventListener("click", () => window.location.reload());
+});
 undoBtn.addEventListener("click", undo);
 document.querySelector("#backBtn").addEventListener("click", () => { stopWorker(); gameView.classList.add("is-hidden"); landing.classList.remove("is-hidden"); document.body.classList.remove("game-active"); });
 document.querySelector("#copyrightYear").textContent = new Date().getFullYear();

@@ -3,12 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Play Gomoku online for free in your browser on a classic 15 x 15 board. Challenge a friend in local PvP or play against a strong computer opponent - no account or download required." />
+    <meta name="author" content="Winchell Wang" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://winchellwang.github.io/gomoku/" />
+    <link rel="alternate" hreflang="en" href="https://winchellwang.github.io/gomoku/" />
+    <link rel="alternate" hreflang="x-default" href="https://winchellwang.github.io/gomoku/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gomoku Arena" />
+    <meta property="og:title" content="Gomoku Arena - Free Browser Gomoku" />
+    <meta property="og:description" content="Play freestyle Gomoku locally with a friend or challenge a strong computer opponent. No account or download required." />
+    <meta property="og:url" content="https://winchellwang.github.io/gomoku/" />
+    <meta property="og:locale" content="en_CA" />
     <meta name="theme-color" content="#050608" />
-    <title>Gomoku Arena</title>
+    <title>Gomoku Arena - Free Browser Gomoku: PvP &amp; Computer</title>
     <link rel="icon" href="./assets/gomoku-logo.svg" type="image/svg+xml" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="./styles.css?v=20260825-1" />
     <script type="module" src="./app.js?v=20260825-1"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Gomoku Arena",
+        "url": "https://winchellwang.github.io/gomoku/",
+        "description": "A free browser Gomoku game on a classic 15 x 15 board for local player-versus-player matches and games against a strong computer opponent.",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Any",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "CAD"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Winchell Wang",
+          "url": "https://winchellwang.github.io/"
+        },
+        "inLanguage": "en"
+      }
+    </script>
     <!-- Register Service Worker for PWA/offline caching. -->
     <script>
       if ("serviceWorker" in navigator) {

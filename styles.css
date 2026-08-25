@@ -47,6 +47,13 @@ button { -webkit-tap-highlight-color: transparent; }
   margin: 0 auto;
 }
 
+.page {
+  width: 100%;
+  max-width: 100vh;
+  max-width: 100dvh;
+  margin-inline: auto;
+}
+
 .panel { display: grid; gap: 12px; align-content: start; }
 .is-hidden { display: none !important; }
 .panel__header { display: flex; align-items: start; justify-content: space-between; gap: 16px; }
